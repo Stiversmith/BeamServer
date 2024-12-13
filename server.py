@@ -1,3 +1,4 @@
+import os
 import asyncio
 import websockets
 import json
@@ -29,8 +30,9 @@ async def broadcast_message(message):
 
 async def main():
     """Основной метод запуска сервера."""
-    print("Сервер запущен на ws://0.0.0.0:8080")
-    async with websockets.serve(handle_connection, "0.0.0.0", 8080):
+    port = int(os.environ.get("PORT", 8080))  # Получаем порт из переменной окружения
+    print(f"Сервер запущен на ws://0.0.0.0:{port}")
+    async with websockets.serve(handle_connection, "0.0.0.0", port):
         await asyncio.Future()  # Блокировка выполнения
 
 if __name__ == "__main__":
