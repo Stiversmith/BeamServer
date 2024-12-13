@@ -26,7 +26,10 @@ async def handle_connection(websocket, path):
 async def broadcast_message(message):
     """Рассылаем сообщение всем подключенным клиентам."""
     if connected_clients:
-        await asyncio.wait([client.send(message) for client in connected_clients])
+        # Используем asyncio.gather вместо asyncio.wait
+        await asyncio.gather(
+            *(client.send(message) for client in connected_clients)
+        )
 
 async def main():
     """Основной метод запуска сервера."""
